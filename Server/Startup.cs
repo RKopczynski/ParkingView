@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RafEla.ParkingView.Server.Data;
 
 namespace RafEla.ParkingView.Server
 {
@@ -31,6 +32,7 @@ namespace RafEla.ParkingView.Server
                 .AllowAnyHeader()
                 .AllowAnyMethod()
             ));
+            services.AddScoped<IParkingRepository, ParkingRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
