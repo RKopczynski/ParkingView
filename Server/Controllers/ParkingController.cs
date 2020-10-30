@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,16 +21,41 @@ namespace RafEla.ParkingView.Server.Controllers
             _repository = repository;
         }
         [HttpGet]
-        public IEnumerable<Parking> Get()
+        public IActionResult Get()
         {
-            var results = _repository.GetAllParkings();
-            return results;
+            try
+            {
+                var results = _repository.GetAllParkings();
+                if (!results.Any())
+                    return NotFound("List of parkings is empty");
+                
+                return Ok(results);
+            }
+            catch (ArgumentNullException)
+            {
+                return NotFound("None parking found");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failed");
+            }
         }
         [HttpGet("{id}")]
-        public Parking Get(int id)
+        public IActionResult Get(int id)
         {
-            var results = _repository.GetParking(id);
-            return results;
+            try
+            {
+                var results = (_repository.GetParking(id));
+                return Ok(results);
+            }
+            catch (InvalidOperationException)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Parking not exists");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failed");
+            }
         }    
     }
 }
