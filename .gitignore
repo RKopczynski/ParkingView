@@ -424,6 +424,8 @@ $RECYCLE.BIN/
 *.msix
 *.msm
 *.msp
+*.csv
+*.csv#
 
 # Windows shortcuts
 *.lnk
