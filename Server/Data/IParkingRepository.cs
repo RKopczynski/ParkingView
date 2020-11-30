@@ -8,6 +8,5 @@ namespace RafEla.ParkingView.Server.Data
     {
         IEnumerable<Parking> GetAllParkings();
 
-        Parking GetParking(int id);
     }
 }

@@ -14,23 +14,12 @@ namespace RafEla.ParkingView.Server.Data
         private readonly IEnumerable<Parking> _parkings;
         public ParkingRepository()
         {
-            this._parkings = new List<Parking>()
-            {
-                new Parking {ParkingId = 1, City = "Poznań", Postcode = "61-624", Street = "Reymonta", StreetNo = 23},
-                new Parking {ParkingId = 2, City = "Poznań", Postcode = "61-624", Street = "Maratońska", StreetNo = 56},
-                new Parking {ParkingId = 3, City = "Poznań", Postcode = "61-624", Street = "Rondo Caponiera", StreetNo = 56},
-                new Parking {ParkingId = 4, City = "Poznań", Postcode = "61-624", Street = "Za Bramką", StreetNo = 56}
-
-            };
+            this._parkings = CsvReader.GetParkingsFromFile();
         }
         public IEnumerable<Parking> GetAllParkings()
         {
             return this._parkings.ToList();
         }
 
-        public Parking GetParking(int id)
-        {
-            return this._parkings.First(p => p.ParkingId == id);
-        }
     }
 }

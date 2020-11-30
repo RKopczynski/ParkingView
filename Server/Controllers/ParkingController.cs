@@ -40,7 +40,7 @@ namespace RafEla.ParkingView.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failed");
             }
         }
-        [HttpGet("{id}")]
+      /*  [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             try
@@ -56,6 +56,6 @@ namespace RafEla.ParkingView.Server.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failed");
             }
-        }    
+        }    */
     }
 }
