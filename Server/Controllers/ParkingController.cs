@@ -20,6 +20,7 @@ namespace RafEla.ParkingView.Server.Controllers
         {
             _repository = repository;
         }
+        
         [HttpGet]
         public IActionResult Get()
         {
@@ -27,7 +28,9 @@ namespace RafEla.ParkingView.Server.Controllers
             {
                 var results = _repository.GetAllParkings();
                 if (!results.Any())
+                {
                     return NotFound("List of parkings is empty");
+                }
                 
                 return Ok(results);
             }

@@ -1,5 +1,41 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h3>Parkingi w Poznaniu</h3>
 
-Welcome to your new app.
+@if (parkings == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Parking</th>
+                <th>Wolne miejsca</th>
+                <th>Znajdź w Google</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var parking in parkings)
+            {
+                <tr>
+                    <td>@parking.Street</td>
+                    <td>@parking.ParkingPlaces</td>
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(parking.ParkingUrl))
+                        {
+                            @("Something is no no!")
+                        }
+                        else
+                        {
+                            <a href="@(parking.ParkingUrl)" target="_blank">
+                                <img class="small-link" src="icons/google_maps.png" />
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

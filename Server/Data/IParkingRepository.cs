@@ -7,6 +7,5 @@ namespace RafEla.ParkingView.Server.Data
     public interface IParkingRepository
     {
         IEnumerable<Parking> GetAllParkings();
-
     }
 }
