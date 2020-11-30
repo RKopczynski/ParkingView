@@ -15,7 +15,6 @@ namespace RafEla.ParkingView.Server.Controllers
     public class ParkingController : ControllerBase
     {
         private readonly IParkingRepository _repository;
-
         public ParkingController(IParkingRepository repository)
         {
             _repository = repository;
@@ -43,22 +42,5 @@ namespace RafEla.ParkingView.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failed");
             }
         }
-      /*  [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            try
-            {
-                var results = (_repository.GetParking(id));
-                return Ok(results);
-            }
-            catch (InvalidOperationException)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, "Parking not exists");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failed");
-            }
-        }    */
     }
 }
