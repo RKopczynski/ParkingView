@@ -425,6 +425,7 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.csv
+!Server/example_data.csv
 *.csv#
 
 # Windows shortcuts

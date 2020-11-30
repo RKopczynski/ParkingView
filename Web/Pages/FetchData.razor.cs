@@ -9,13 +9,13 @@ namespace RafEla.ParkingView.Web.Pages {
 
     public partial class FetchData
     {
-        private WeatherForecast[] forecasts;
+        private Parking[] parkings;
         
         [Inject] public HttpClient Http { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("https://localhost:5001/weatherforecast");
+            parkings = await Http.GetFromJsonAsync<Parking[]>("https://localhost:5001/api/Parking");
         }
     }
 }
