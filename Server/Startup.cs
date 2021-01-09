@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RafEla.ParkingView.Server.Configuration;
 using RafEla.ParkingView.Server.Data;
 
 namespace RafEla.ParkingView.Server
@@ -38,6 +39,9 @@ namespace RafEla.ParkingView.Server
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RafEla.ParkingView.Server", Version = "v1" });
             });
+
+            services.Configure<ZtmConfig>(Configuration.GetSection("ztm"));
+            services.AddSingleton<CsvReader>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
