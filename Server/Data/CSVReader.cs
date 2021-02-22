@@ -1,8 +1,8 @@
+using System.Net;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic.FileIO;
 using RafEla.ParkingView.Server.Configuration;
@@ -11,24 +11,21 @@ using RafEla.ParkingView.Shared;
 namespace RafEla.ParkingView.Server.Data
 {
     public class CsvReader
-    {
-        record ParsedLine(DateTime Date, int FreeParkingSpaces, string Street);
-        private readonly string _pathName;
+    {        
         private readonly ZtmConfig _config;
 
-        private static List<ParsedLine> _data;
+        public static List<ParsedLine> _data;
 
         public CsvReader(IOptions<ZtmConfig> config)
         {
             _config = config.Value;
-            _pathName = Directory.GetCurrentDirectory() + "/example_data.csv";
         }
 
         public List<Parking> GetParkingsFromFile()
         {
-            GetParkingsToFile();
-            ReadFile();
             List<Parking> parkings = new ();
+
+            GetParkings();
 
             foreach (var v in _data)
             {
@@ -41,46 +38,20 @@ namespace RafEla.ParkingView.Server.Data
                     });
                 }
             }
-
             return parkings;
-        }
+        }           
 
-        private void ReadFile()
+
+        private void GetParkings()
         {
-            _data = new List<ParsedLine>();
-            var header = "Czas_Rejestracji";
+            var resultsPR = GetParkAndRideParking("P&R");
+            var resultsBufor = GetParkAndRideParking("bufor");
 
-            if (File.Exists(_pathName))
-            {
-                using var csvReader = new TextFieldParser(_pathName);
-                csvReader.SetDelimiters(new string[] {";"});
-                
-                // Skip the row with the column names
-                csvReader.ReadLine();
-
-                while (!csvReader.EndOfData)
-                {
-                    // Read current line fields, pointer moves to the next line.
-                    string[] fields = csvReader.ReadFields();
-                    if (fields[0] != header)
-                    {
-                        _data.Add(new (DateTime.Parse(fields[0]), int.Parse(fields[1]), fields[4]));
-                    }
-                }
-            }
-
+            _data = resultsPR.Concat(resultsBufor).ToList();
             _data = _data.OrderByDescending(o => o.Date).ToList();
         }
 
-        private void GetParkingsToFile()
-        {
-            var resultsPR = GetParkAndRideParkings("P&R");
-            var resultsBufor = GetParkAndRideParkings("bufor");
-    
-            File.WriteAllText(_pathName, resultsBufor + resultsPR);
-        }
-
-        private string GetParkAndRideParkings(string kind)
+        private List<ParsedLine> GetParkAndRideParking(string kind)
         {
             string url = "";
 
@@ -94,9 +65,9 @@ namespace RafEla.ParkingView.Server.Data
 
             StreamReader sr = new StreamReader(resp.GetResponseStream());
             string results = sr.ReadToEnd();
-            sr.Close();
+            sr.Close();            
 
-            return results;
+            return results.Parse();
         }
 
         private static string _getParkingURL(string street)

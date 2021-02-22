@@ -38,6 +38,7 @@ namespace RafEla.ParkingView.Server
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RafEla.ParkingView.Server", Version = "v1" });
+                     c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
             });
 
             services.Configure<ZtmConfig>(Configuration.GetSection("ztm"));
